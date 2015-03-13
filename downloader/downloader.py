@@ -100,12 +100,12 @@ def download_with_pool(url):
 
 
 if __name__ == '__main__':
-    # url = 'http://open.163.com/special/opencourse/algorithms.html'
+    url = 'http://open.163.com/special/opencourse/algorithms.html'
     # url = 'http://open.163.com/special/opencourse/ios7.html'
-    url = 'http://open.163.com/special/opencourse/ios8.html'
+    # url = 'http://open.163.com/special/opencourse/ios8.html'
     # url = 'http://open.163.com/special/opencourse/ipadandiphoneapplication.html'
     list1 = get_song_url(url)
-    write_urls_to_file(list1, 'ios8.txt')
+    write_urls_to_file(list1, 'algorithms.txt')
     # write_urls_to_file(list1, 'ipadandiphoneapplication.txt')
     if not list1:
         print('没有视频信息!')
