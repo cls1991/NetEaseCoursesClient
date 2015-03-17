@@ -18,12 +18,11 @@ replace_pattern = re.compile('appsrc : ')
 rename_pattern = re.compile('.m3u8')
 
 
-# @todo 视频名乱码
 # 注意: 这里获取下载链接时, 需要设置agent为移动端; pc端并未提供下载
-def get_song_url(url):
+def get_song_url(url0):
     buffers = StringIO()
     curl = pycurl.Curl()
-    curl.setopt(pycurl.URL, url)
+    curl.setopt(pycurl.URL, url0)
     curl.setopt(pycurl.USERAGENT, user_agent)
     curl.setopt(pycurl.WRITEDATA, buffers)
     curl.perform()
@@ -34,10 +33,15 @@ def get_song_url(url):
 
     # 找到所有课程的html链接
     url_list = []
-    content = soup.find('table', {'id': 'list2'}).findAll('td', {'class': 'u-ctitle'})
+    content0 = soup.find('table', {'id': 'list2'})
+    if not content0:
+        print(u'未提供视频资源')
+        return None
+    content = content0.findAll('td', {'class': 'u-ctitle'})
     for tag in content:
         temp_content = tag.find('a')
-        name = temp_content.text
+        # @todo 解决视频名乱码的问题
+        # name = temp_content.text
         href = temp_content['href']
         real_url = get_song_real_url(href)
         url_list.append(real_url)
@@ -64,7 +68,12 @@ def get_song_real_url(html_url):
 
     # 获取包含视频真实地址的script
     content = soup.findAll('script', {'type': 'text/javascript'})
-    result = search_pattern.search(content[7].text)
+    """
+    为了兼顾性能, 这里参考大量网页源代码, 总结出来视频url出现在倒数第二个script脚本中
+    省去了全局搜索造成的额外开销
+    """
+    pos = len(content) - 1
+    result = search_pattern.search(content[pos].text)
     if result:
         tmp_url = result.group(0)
         real_url = rename_pattern.sub('.mp4', replace_pattern.sub('', tmp_url)).replace("'", '')
@@ -81,9 +90,12 @@ def write_urls_to_file(urls, fname):
     :return:
     """
     try:
+        if not urls:
+            exit()
         file_object = open(fname, 'w')
         file_object.write('\n'.join(urls))
         file_object.close()
+        print(u'url文件已生成')
     except IOError:
         print(u'文件不存在')
         exit()
@@ -100,13 +112,14 @@ def download_with_pool(url):
 
 
 if __name__ == '__main__':
-    url = 'http://open.163.com/special/opencourse/algorithms.html'
+    # 测试样例
+    # url = 'http://open.163.com/special/opencourse/algorithms.html'
     # url = 'http://open.163.com/special/opencourse/ios7.html'
     # url = 'http://open.163.com/special/opencourse/ios8.html'
-    # url = 'http://open.163.com/special/opencourse/ipadandiphoneapplication.html'
+    # url = 'http://open.163.com/special/opencourse/mitmaterial.html'
+    url = 'http://open.163.com/special/opencourse/ipadandiphoneapplication.html'
     list1 = get_song_url(url)
-    write_urls_to_file(list1, 'algorithms.txt')
-    # write_urls_to_file(list1, 'ipadandiphoneapplication.txt')
+    write_urls_to_file(list1, 'ipadandiphoneapplication.txt')
     if not list1:
         print('没有视频信息!')
     else:
