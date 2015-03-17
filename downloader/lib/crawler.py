@@ -1,10 +1,20 @@
 # coding: utf8
+
+import os
+# 切换工作目录到项目根目录
+project = os.path.split(os.path.realpath(__file__))[0]
+os.chdir(project)
+
 import pycurl
 import re
 import wget
 from StringIO import StringIO
 from bs4 import BeautifulSoup
 from multiprocessing.dummy import Pool as ThreadPool
+
+# 测试网页编码
+import chardet
+
 # 伪装成iPad客户端
 user_agent = 'Mozilla/5.0(iPad; U; CPU iPhone OS 3_2 like Mac OS X; en-us) ' \
              'AppleWebKit/531.21.10 (KHTML, like Gecko) Version/4.0.4 Mobile/7B314 Safari/531.21.10'
@@ -29,22 +39,21 @@ def get_song_url(url0):
     curl.close()
 
     body = buffers.getvalue()
+    # print chardet.detect(body)
     soup = BeautifulSoup(body)
-
     # 找到所有课程的html链接
     url_list = []
     content0 = soup.find('table', {'id': 'list2'})
     if not content0:
-        print(u'未提供视频资源')
         return None
     content = content0.findAll('td', {'class': 'u-ctitle'})
     for tag in content:
         temp_content = tag.find('a')
         # @todo 解决视频名乱码的问题
-        # name = temp_content.text
+        name = temp_content.text
         href = temp_content['href']
         real_url = get_song_real_url(href)
-        url_list.append(real_url)
+        url_list.append(name)
     return url_list
 
 
@@ -69,7 +78,7 @@ def get_song_real_url(html_url):
     # 获取包含视频真实地址的script
     content = soup.findAll('script', {'type': 'text/javascript'})
     """
-    为了兼顾性能, 这里参考大量网页源代码, 总结出来视频url出现在倒数第二个script脚本中
+    为了兼顾性能, 这里参考大量网页源代码, 总结出来视频url出现在倒数第二个script脚本中,
     省去了全局搜索造成的额外开销
     """
     pos = len(content) - 1
@@ -89,11 +98,10 @@ def write_urls_to_file(urls, fname):
     :param fname: 文件名
     :return:
     """
+    base_dir = '../out/'
     try:
-        if not urls:
-            exit()
-        file_object = open(fname, 'w')
-        file_object.write('\n'.join(urls))
+        file_object = open(base_dir + fname, 'w')
+        file_object.write('\n'.join(urls).encode('utf8'))
         file_object.close()
         print(u'url文件已生成')
     except IOError:
@@ -111,26 +119,26 @@ def download_with_pool(url):
         print(u'下载%s出现错误' % url)
 
 
-if __name__ == '__main__':
-    # 测试样例
-    # url = 'http://open.163.com/special/opencourse/algorithms.html'
-    # url = 'http://open.163.com/special/opencourse/ios7.html'
-    # url = 'http://open.163.com/special/opencourse/ios8.html'
-    # url = 'http://open.163.com/special/opencourse/mitmaterial.html'
-    url = 'http://open.163.com/special/opencourse/ipadandiphoneapplication.html'
-    list1 = get_song_url(url)
-    write_urls_to_file(list1, 'ipadandiphoneapplication.txt')
+def run(html_url, saved_name):
+    """
+    封装好的接口, 供外部程序调用
+    :param html_url: 目标网页的url; 比如: url = 'http://open.163.com/special/opencourse/algorithms.html'
+    :param saved_name: url存储的文件名
+    :return:
+    """
+    list1 = get_song_url(html_url)
     if not list1:
-        print('没有视频信息!')
+        print(u'未提供相关视频资源!')
     else:
-        print('是否下载?(y/n)')
+        write_urls_to_file(list1, saved_name)
+        print(u'是否下载?(y/n)')
         choice = raw_input()
         if choice == 'Y' or choice == 'y':
-            print('开始下载视频...')
+            print(u'开始下载视频...')
             pool = ThreadPool(4)
-            results = pool.map(download_with_pool, list1)
+            pool.map(download_with_pool, list1)
             pool.close()
             pool.join()
-            print('下载完毕!')
+            print(u'下载完毕!')
         else:
-            print('已取消下载')
+            print(u'已取消下载')
