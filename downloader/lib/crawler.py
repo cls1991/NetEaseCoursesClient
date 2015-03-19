@@ -12,9 +12,6 @@ from StringIO import StringIO
 from bs4 import BeautifulSoup
 from multiprocessing.dummy import Pool as ThreadPool
 
-# 测试网页编码
-import chardet
-
 # 伪装成iPad客户端
 user_agent = 'Mozilla/5.0(iPad; U; CPU iPhone OS 3_2 like Mac OS X; en-us) ' \
              'AppleWebKit/531.21.10 (KHTML, like Gecko) Version/4.0.4 Mobile/7B314 Safari/531.21.10'
