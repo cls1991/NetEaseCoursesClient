@@ -1,6 +1,6 @@
 #-------------------------------------------------
 #
-# Project created by QtCreator 2015-03-19T15:21:43
+# Project created by QtCreator 2015-03-19T22:48:50
 #
 #-------------------------------------------------
 
@@ -13,12 +13,11 @@ TEMPLATE = app
 
 
 SOURCES += main.cpp\
-        widget.cpp
+        player.cpp
 
-HEADERS  += widget.h
+HEADERS  += player.h
 
-FORMS    += widget.ui
+FORMS    += player.ui
 
 DISTFILES += \
     test.mp3 \
-    ip
