@@ -19,5 +19,3 @@ HEADERS  += player.h
 
 FORMS    += player.ui
 
-DISTFILES += \
-    test.mp3 \
