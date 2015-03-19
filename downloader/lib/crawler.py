@@ -50,10 +50,10 @@ def get_song_url(url0):
     for tag in content:
         temp_content = tag.find('a')
         # @todo 解决视频名乱码的问题
-        name = temp_content.text
+        # name = temp_content.text
         href = temp_content['href']
         real_url = get_song_real_url(href)
-        url_list.append(name)
+        url_list.append(real_url)
     return url_list
 
 
