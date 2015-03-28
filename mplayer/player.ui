@@ -20,7 +20,7 @@
    <property name="geometry">
     <rect>
      <x>10</x>
-     <y>600</y>
+     <y>610</y>
      <width>81</width>
      <height>28</height>
     </rect>
@@ -69,22 +69,9 @@
     <rect>
      <x>720</x>
      <y>60</y>
-     <width>241</width>
+     <width>251</width>
      <height>551</height>
     </rect>
-   </property>
-  </widget>
-  <widget class="QScrollBar" name="verticalScrollBar">
-   <property name="geometry">
-    <rect>
-     <x>970</x>
-     <y>60</y>
-     <width>16</width>
-     <height>551</height>
-    </rect>
-   </property>
-   <property name="orientation">
-    <enum>Qt::Vertical</enum>
    </property>
   </widget>
   <widget class="QPlainTextEdit" name="plainTextEdit">
@@ -98,12 +85,15 @@
    </property>
   </widget>
   <widget class="QSlider" name="horizontalSlider">
+   <property name="enabled">
+    <bool>true</bool>
+   </property>
    <property name="geometry">
     <rect>
      <x>10</x>
-     <y>570</y>
+     <y>560</y>
      <width>691</width>
-     <height>21</height>
+     <height>16</height>
     </rect>
    </property>
    <property name="orientation">
@@ -113,14 +103,40 @@
   <widget class="QPushButton" name="pushButton_3">
    <property name="geometry">
     <rect>
-     <x>140</x>
-     <y>600</y>
+     <x>130</x>
+     <y>610</y>
      <width>71</width>
      <height>28</height>
     </rect>
    </property>
    <property name="text">
     <string>pause</string>
+   </property>
+  </widget>
+  <widget class="QLabel" name="label">
+   <property name="geometry">
+    <rect>
+     <x>10</x>
+     <y>580</y>
+     <width>81</width>
+     <height>18</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string/>
+   </property>
+  </widget>
+  <widget class="QLabel" name="label_2">
+   <property name="geometry">
+    <rect>
+     <x>620</x>
+     <y>580</y>
+     <width>81</width>
+     <height>18</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string/>
    </property>
   </widget>
  </widget>
