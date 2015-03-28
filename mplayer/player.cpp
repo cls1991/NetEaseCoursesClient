@@ -1,7 +1,10 @@
-#include "player.h"
-#include "ui_player.h"
 #include <QProcess>
 #include <QDebug>
+#include <QList>
+
+#include "player.h"
+#include "ui_player.h"
+#include "videoItem.h"
 
 Player::Player(QWidget *parent) :
     QWidget(parent),
@@ -39,10 +42,15 @@ void Player::playButton_clicked() {
 
 void Player::searchButton_clicked() {
     // 测试listview是否可用
-    QStringList args;
-    args << "taozhengkai";
-    args << "heavenfox";
-    this->model->setStringList(args);
+    if (this->ui->plainTextEdit->toPlainText() != "") {
+        QStringList args;
+        args << this->ui->plainTextEdit->toPlainText();
+        // 从python后台获取数据
+        QList<VideoItem *> itemList;
+        itemList.append(new VideoItem(1, "ios8_1", "http://mov.bn.netease.com/open-movie/nos/mp4/2015/03/02/SAIPMBN3I_shd.mp4"));
+        qDebug() << itemList.at(0)->getVideoUrl();
+        this->model->setStringList(args);
+    }
 }
 
 

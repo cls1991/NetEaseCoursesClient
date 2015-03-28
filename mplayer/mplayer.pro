@@ -13,9 +13,11 @@ TEMPLATE = app
 
 
 SOURCES += main.cpp\
-        player.cpp
+        player.cpp \
+    videoItem.cpp
 
-HEADERS  += player.h
+HEADERS  += player.h \
+    videoItem.h
 
 FORMS    += player.ui
 
