@@ -19,3 +19,6 @@ HEADERS  += player.h
 
 FORMS    += player.ui
 
+OTHER_FILES += \
+    qml/main.qml
+
