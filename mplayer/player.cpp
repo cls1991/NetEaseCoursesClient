@@ -4,6 +4,8 @@
 #include "player.h"
 #include "ui_player.h"
 #include "videoItem.h"
+#include "httpClient.h"
+
 
 Player::Player(QWidget *parent) :
     QWidget(parent),
@@ -83,7 +85,12 @@ void Player::searchButton_clicked() {
     if (this->ui->plainTextEdit->toPlainText() != "") {
         QStringList args;
         args << this->ui->plainTextEdit->toPlainText();
+        this->model->setStringList(args);
         // 从python后台获取数据
+        std::string buffer;
+        HttpClient().get("http://localhost:9001/showLinks?html_url=http://open.163.com/special/opencourse/algorithms.html", buffer);
+        args << QString::fromUtf8(buffer.c_str());
+        this->model->setStringList(args);
 //        QList<VideoItem *> itemList;
 //        itemList.append(new VideoItem(1, "music", "/home/tao/Music/走在冷风中.mp3"));
 //        itemList.append(new VideoItem(2, "ios8_1", "http://mov.bn.netease.com/open-movie/nos/mp4/2015/03/02/SAIPMBN3I_shd.mp4"));

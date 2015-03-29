@@ -11,13 +11,16 @@ greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 TARGET = mplayer
 TEMPLATE = app
 
+LIBS += -lcurl
 
 SOURCES += main.cpp\
         player.cpp \
-    videoItem.cpp
+    videoItem.cpp \
+    httpClient.cpp
 
 HEADERS  += player.h \
-    videoItem.h
+    videoItem.h \
+    httpClient.h
 
 FORMS    += player.ui
 
