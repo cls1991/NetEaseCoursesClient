@@ -21,16 +21,19 @@ public:
     ~Player();
 
 private slots:
-    void playButton_clicked();
-    void pauseButton_clicked();
+    void play_or_pause_clicked();
+    void exit_play();
+    void seek_slots(int value);
+    void volum_slots(int value);
+    void mute_slots();
     void searchButton_clicked();
     void listItem_clicked(QModelIndex index);
-    void slideBar_moved(int);
     void get_time_slots();
     void back_message_slots();
-
-
     QTime get_time_from_seconds(int second);
+
+private:
+    void start_play();
 
 private:
     Ui::Player *ui;
@@ -40,6 +43,12 @@ private:
     QTimer *timer;
     int curTime;
     int totalTime;
+    QString filename;
+
+    bool isPlay;
+    bool isStop;
+    bool isMute;
+
 };
 
 #endif // PLAYER_H
