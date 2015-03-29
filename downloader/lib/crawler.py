@@ -1,16 +1,9 @@
 # coding: utf8
 
-import os
-# 切换工作目录到项目根目录
-project = os.path.split(os.path.realpath(__file__))[0]
-os.chdir(project)
-
 import pycurl
 import re
-import wget
 from StringIO import StringIO
 from bs4 import BeautifulSoup
-from multiprocessing.dummy import Pool as ThreadPool
 
 # 伪装成iPad客户端
 user_agent = 'Mozilla/5.0(iPad; U; CPU iPhone OS 3_2 like Mac OS X; en-us) ' \
@@ -49,6 +42,7 @@ def get_song_url(url0):
         # @todo 解决视频名乱码的问题
         # name = temp_content.text
         href = temp_content['href']
+        print href
         real_url = get_song_real_url(href)
         url_list.append(real_url)
     return url_list
@@ -86,56 +80,3 @@ def get_song_real_url(html_url):
         return real_url
     else:
         return None
-
-
-def write_urls_to_file(urls, fname):
-    """
-    将视频真实下载链接写入文件
-    :param urls: list类型
-    :param fname: 文件名
-    :return:
-    """
-    base_dir = '../out/'
-    try:
-        file_object = open(base_dir + fname, 'w')
-        file_object.write('\n'.join(urls).encode('utf8'))
-        file_object.close()
-        print(u'url文件已生成')
-    except IOError:
-        print(u'文件不存在')
-        exit()
-
-
-# 用pool改写for循环
-def download_with_pool(url):
-    print(u'开始下载%s' % url)
-    try:
-        wget.download(url)
-        print(u'%s下载完毕' % url)
-    except Exception:
-        print(u'下载%s出现错误' % url)
-
-
-def run(html_url, saved_name):
-    """
-    封装好的接口, 供外部程序调用
-    :param html_url: 目标网页的url; 比如: url = 'http://open.163.com/special/opencourse/algorithms.html'
-    :param saved_name: url存储的文件名
-    :return:
-    """
-    list1 = get_song_url(html_url)
-    if not list1:
-        print(u'未提供相关视频资源!')
-    else:
-        write_urls_to_file(list1, saved_name)
-        print(u'是否下载?(y/n)')
-        choice = raw_input()
-        if choice == 'Y' or choice == 'y':
-            print(u'开始下载视频...')
-            pool = ThreadPool(4)
-            pool.map(download_with_pool, list1)
-            pool.close()
-            pool.join()
-            print(u'下载完毕!')
-        else:
-            print(u'已取消下载')

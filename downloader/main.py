@@ -10,5 +10,4 @@ if __name__ == '__main__':
     # url = 'http://open.163.com/special/opencourse/ios8.html'
     # url = 'http://open.163.com/special/opencourse/mitmaterial.html'
     url = 'http://open.163.com/special/opencourse/ipadandiphoneapplication.html'
-    file_name = 'ipadandiphoneapplication.txt'
-    crawler.run(url, file_name)
+    print crawler.get_song_url(url)
