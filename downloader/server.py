@@ -21,8 +21,8 @@ class MainHandler(tornado.web.RequestHandler):
 	处理get请求
 	"""
 	def get(self):
-		print 'hello, world!'
-		
+		self.write('hello, world!')
+		self.finish()
 	
 application = tornado.web.Application([
 	(r"/", MainHandler),
