@@ -1,5 +1,6 @@
 #include <QDebug>
 #include <QList>
+#include <jsoncpp/json/json.h>
 
 #include "player.h"
 #include "ui_player.h"
@@ -83,19 +84,24 @@ void Player::play_or_pause_clicked() {
 void Player::searchButton_clicked() {
     // 测试listview是否可用
     if (this->ui->plainTextEdit->toPlainText() != "") {
+        // example: http://open.163.com/special/opencourse/algorithms.html
+        std::string search = this->ui->plainTextEdit->toPlainText().toUtf8().constData();
         QStringList args;
-        args << this->ui->plainTextEdit->toPlainText();
-        this->model->setStringList(args);
-        // 从python后台获取数据
+        // 模拟httpclient获取后台数据
         std::string buffer;
-        HttpClient().get("http://localhost:9001/showLinks?html_url=http://open.163.com/special/opencourse/algorithms.html", buffer);
-        args << QString::fromUtf8(buffer.c_str());
+        HttpClient().get("http://localhost:9001/showLinks?html_url=" + search, buffer);
+        Json::Reader reader;
+        Json::Value root;
+        if (reader.parse(buffer, root)) {
+            // 获取视频链接集合
+            const Json::Value arrayObj = root["data"];
+            for (unsigned int i=0; i< arrayObj.size(); i++) {
+                std::string url = arrayObj[i].asString();
+                // convert std::string to QString
+                args << QString::fromUtf8(url.c_str());
+            }
+        }
         this->model->setStringList(args);
-//        QList<VideoItem *> itemList;
-//        itemList.append(new VideoItem(1, "music", "/home/tao/Music/走在冷风中.mp3"));
-//        itemList.append(new VideoItem(2, "ios8_1", "http://mov.bn.netease.com/open-movie/nos/mp4/2015/03/02/SAIPMBN3I_shd.mp4"));
-//        qDebug() << itemList.at(0)->getVideoUrl();
-//        this->model->setStringList(args);
     }
 }
 

@@ -11,7 +11,8 @@ greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 TARGET = mplayer
 TEMPLATE = app
 
-LIBS += -lcurl
+LIBS += -lcurl\
+        -ljsoncpp
 
 SOURCES += main.cpp\
         player.cpp \

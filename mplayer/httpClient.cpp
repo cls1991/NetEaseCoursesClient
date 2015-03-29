@@ -1,5 +1,4 @@
 #include <curl/curl.h>
-#include <iostream>
 
 #include "httpClient.h"
 
