@@ -16,6 +16,10 @@ Player::Player(QWidget *parent) :
     filename("")
 {
     ui->setupUi(this);
+
+    ui->label->setText("00:00:00");
+    ui->label_2->setText("00:00:00");
+
     model = new QStringListModel(this);
 
     ui->listView->setModel(model);
