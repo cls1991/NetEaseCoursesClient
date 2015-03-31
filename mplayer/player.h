@@ -25,6 +25,8 @@ private slots:
     void exit_play();
     void seek_slots(int value);
     void volum_slots(int value);
+    void next_slots();
+    void pre_slots();
     void mute_slots();
     void searchButton_clicked();
     void listItem_clicked(QModelIndex index);
@@ -43,6 +45,7 @@ private:
     QTimer *timer;
     int curTime;
     int totalTime;
+    int size;
     QString filename;
 
     bool isPlay;

@@ -11,7 +11,7 @@
 Player::Player(QWidget *parent) :
     QWidget(parent),
     ui(new Ui::Player),
-    curTime(0), totalTime(1),
+    curTime(0), totalTime(1), size(0),
     isPlay(false), isStop(true), isMute(false),
     filename("")
 {
@@ -32,6 +32,8 @@ Player::Player(QWidget *parent) :
     // 槽函数
     connect(ui->pushButton, SIGNAL(clicked()), this, SLOT(play_or_pause_clicked()));
     connect(ui->pushButton_3, SIGNAL(clicked()), this, SLOT(exit_play()));
+    connect(ui->pushButton_5, SIGNAL(clicked()), this, SLOT(next_slots()));
+    connect(ui->pushButton_6, SIGNAL(clicked()), this, SLOT(pre_slots()));
     connect(ui->spinBox, SIGNAL(valueChanged(int)), this, SLOT(volum_slots(int)));
     connect(ui->pushButton_4, SIGNAL(clicked()), this, SLOT(mute_slots()));
     connect(ui->pushButton_2, SIGNAL(clicked()), this, SLOT(searchButton_clicked()));
@@ -85,6 +87,28 @@ void Player::play_or_pause_clicked() {
     }
 }
 
+void Player::next_slots() {
+    QModelIndex modelIndex = this->ui->listView->currentIndex();
+    QModelIndex nextIndex = model->index(qMax(size, modelIndex.row() + 1), 0, QModelIndex());
+    filename = nextIndex.data().toString();
+    exit_play();
+    process->write("quit\n");
+    process = new QProcess(this);
+    connect(process, SIGNAL(readyReadStandardOutput()), this, SLOT(back_message_slots()));
+    start_play();
+}
+
+void Player::pre_slots() {
+    QModelIndex modelIndex = this->ui->listView->currentIndex();
+    QModelIndex nextIndex = model->index(qMin(0, modelIndex.row()-1), 0, QModelIndex());
+    filename = nextIndex.data().toString();
+    exit_play();
+    process->write("quit\n");
+    process = new QProcess(this);
+    connect(process, SIGNAL(readyReadStandardOutput()), this, SLOT(back_message_slots()));
+    start_play();
+}
+
 void Player::searchButton_clicked() {
     // 测试listview是否可用
     if (this->ui->plainTextEdit->toPlainText() != "") {
@@ -99,7 +123,8 @@ void Player::searchButton_clicked() {
         if (reader.parse(buffer, root)) {
             // 获取视频链接集合
             const Json::Value arrayObj = root["data"];
-            for (unsigned int i=0; i< arrayObj.size(); i++) {
+            size = arrayObj.size();
+            for (unsigned int i=0; i< size; i++) {
                 std::string url = arrayObj[i].asString();
                 // convert std::string to QString
                 args << QString::fromUtf8(url.c_str());
@@ -176,6 +201,7 @@ void Player::exit_play() {
     this->ui->label_2->setText("00:00:00");
     this->ui->horizontalSlider->setValue(0);
     isStop = true;
+    size = 0;
 }
 
 void Player::volum_slots(int value) {
