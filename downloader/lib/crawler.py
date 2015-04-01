@@ -36,6 +36,7 @@ def get_song_url(url0):
     content0 = soup.find('table', {'id': 'list2'})
     if not content0:
         return None
+    soup.decompose()
     content = content0.findAll('td', {'class': 'u-ctitle'})
     for tag in content:
         temp_content = tag.find('a')
@@ -68,6 +69,7 @@ def get_song_real_url(html_url):
 
     # 获取包含视频真实地址的script
     content = soup.findAll('script', {'type': 'text/javascript'})
+    soup.decompose()
     """
     为了兼顾性能, 这里参考大量网页源代码, 总结出来视频url出现在倒数第二个script脚本中,
     省去了全局搜索造成的额外开销
