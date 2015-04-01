@@ -3,4 +3,3 @@ beautifulsoup4==4.3.2
 certifi==14.5.14
 pycurl==7.19.5.1
 tornado==4.1
-wget==2.2
