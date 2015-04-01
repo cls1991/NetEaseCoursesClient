@@ -23,7 +23,7 @@ class ShowHandler(tornado.web.RequestHandler):
 				"data": urls
 			}
 		))
-		self.finish
+		self.finish()
 
 	def post(self):
 		return HTTPError(code=405)
