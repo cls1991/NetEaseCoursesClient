@@ -4,6 +4,8 @@ import pycurl
 import re
 from StringIO import StringIO
 from bs4 import BeautifulSoup
+import json
+import memcached
 
 # 伪装成iPad客户端
 user_agent = 'Mozilla/5.0(iPad; U; CPU iPhone OS 3_2 like Mac OS X; en-us) ' \
@@ -16,10 +18,16 @@ search_pattern = re.compile('%s(.*)%s' % ('appsrc', "'"))
 replace_pattern = re.compile('appsrc : ')
 # .m3u8 => .mp4
 rename_pattern = re.compile('.m3u8')
-
+# memcached
+mc = memcached.Client('127.0.0.1:11211')
 
 # 注意: 这里获取下载链接时, 需要设置agent为移动端; pc端并未提供下载
 def get_song_url(url0):
+    url_list = []
+    if mc.get(url0):
+        jstr = mc.get(url0)
+        url_list = json.loads(jstr)['data']
+        return url_list
     buffers = StringIO()
     curl = pycurl.Curl()
     curl.setopt(pycurl.URL, url0)
@@ -32,7 +40,6 @@ def get_song_url(url0):
     # print chardet.detect(body)
     soup = BeautifulSoup(body)
     # 找到所有课程的html链接
-    url_list = []
     content0 = soup.find('table', {'id': 'list2'})
     if not content0:
         return None
@@ -42,9 +49,12 @@ def get_song_url(url0):
         # @todo 解决视频名乱码的问题
         # name = temp_content.text
         href = temp_content['href']
-        print href
         real_url = get_song_real_url(href)
         url_list.append(real_url)
+    jstr = json.dumps({
+        "data": url_list
+    })
+    mc.set(url0, jstr, 60)
     return url_list
 
 
