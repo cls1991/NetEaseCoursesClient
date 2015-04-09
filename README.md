@@ -7,7 +7,7 @@
 #####4.客户端要模拟httpclient发送http请求，与服务器进行数据交互，这里选择用curl进行httpclient模拟，因此需要安装curl及curl-devel相关软件
 #####5.客户端播放器后台采用的是开源的mplayer，因此需要安装mplayer软件
 ####目录说明
-####-*163CoursesDownloader/
+####-*NetEaseCoursesClient/
 ##### --*crawler/
 ###### ---*lib/
 ###### ----showLinks.py: 处理http请求
