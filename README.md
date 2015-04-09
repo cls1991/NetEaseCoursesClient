@@ -1,4 +1,5 @@
-# 163CoursesDownloader
+fconfig
+# NetEaseCoursesClient
 ###客户端查询并观看网易公开课的视频
 ####环境配置
 #####1.服务器基于python构建，requirements.txt文件列举出了依赖的python库
@@ -8,7 +9,7 @@
 #####5.客户端播放器后台采用的是开源的mplayer，因此需要安装mplayer软件
 ####目录说明
 ####-*163CoursesDownloader/
-##### --*downloader/
+##### --*crawler/
 ###### ---*lib/
 ###### ----showLinks.py: 处理http请求
 ###### ----crawler.py: 负责找到视频真实下载链接
