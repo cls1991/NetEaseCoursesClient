@@ -1,4 +1,3 @@
-fconfig
 # NetEaseCoursesClient
 ###客户端查询并观看网易公开课的视频
 ####环境配置
