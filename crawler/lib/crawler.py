@@ -5,7 +5,7 @@ import re
 from StringIO import StringIO
 from bs4 import BeautifulSoup
 import json
-import memcached
+import memcache
 
 # 伪装成iPad客户端
 user_agent = 'Mozilla/5.0(iPad; U; CPU iPhone OS 3_2 like Mac OS X; en-us) ' \
@@ -19,7 +19,7 @@ replace_pattern = re.compile('appsrc : ')
 # .m3u8 => .mp4
 rename_pattern = re.compile('.m3u8')
 # memcached
-mc = memcached.Client('127.0.0.1:11211')
+mc = memcache.Client('127.0.0.1:11211')
 
 # 注意: 这里获取下载链接时, 需要设置agent为移动端; pc端并未提供下载
 def get_song_url(url0):
