@@ -19,7 +19,8 @@ replace_pattern = re.compile('appsrc : ')
 # .m3u8 => .mp4
 rename_pattern = re.compile('.m3u8')
 # memcached
-mc = memcache.Client('127.0.0.1:11211')
+mc = memcache.Client(['127.0.0.1:11211'], debug=0)
+
 
 # 注意: 这里获取下载链接时, 需要设置agent为移动端; pc端并未提供下载
 def get_song_url(url0):

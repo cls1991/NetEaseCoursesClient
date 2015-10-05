@@ -17,21 +17,22 @@ from lib.showLinks import ShowHandler
 
 
 class MainHandler(tornado.web.RequestHandler):
-	"""
-	处理get请求
-	"""
-	def get(self):
-	self.write('hello, world!')
-	self.finish()
-	
+    """
+    处理get请求
+    """
+    def get(self):
+        self.write('hello, world!')
+        self.finish()
+
 application = tornado.web.Application([
-	(r"/", MainHandler),
-	(r"/showLinks", ShowHandler)
+    (r"/", MainHandler),
+    (r"/showLinks", ShowHandler)
 ])
 
 if __name__ == '__main__':
-	port = 9001
-	server = tornado.httpserver.HTTPServer(application)
-	server.bind(port)
-	server.start(1)
-	tornado.ioloop.IOLoop.instance().start()
+    port = 9001
+    server = tornado.httpserver.HTTPServer(application)
+    server.bind(port)
+    server.start(1)
+    tornado.ioloop.IOLoop.instance().start()
+
