@@ -28,7 +28,7 @@ NetEaseCoursesClient
 -----------------------------------------------
 #### 1. 服务器：基于tornado的httpserver，启动服务，监听端口9001（当然，可以自定义端口号）；通过不同的url转发到对应的RequestHandler处理，服务器启动指令如下所示：
 ![server_run_pic](https://github.com/cls1991/163CoursesDownloader/raw/master/pictures/server_run_pic.png)
-####当然，可以直接通过浏览器发送http请求，查看服务器返回的数据，结果显示如下：
+当然，可以直接通过浏览器发送http请求，查看服务器返回的数据，结果显示如下：
 ![httpclient_result_pic](https://github.com/cls1991/163CoursesDownloader/raw/master/pictures/httpclient_result_pic.png)
 #### 2. 客户端：基于QT框架，搜索网易公开课视频，模拟httpclient与服务器交互，并获取视频真实链接；至于视频播放，QT搭建的其实只是一个前端的mplayer壳，借助QProcess与后台的mplayer播放器传递控制命令，完成播放器的基本操作；
 * step1: 搜索
